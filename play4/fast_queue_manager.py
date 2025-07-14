@@ -17,7 +17,7 @@ from .metadata import SongMetadata, MetadataSource, MetadataCache
 from .player import Colors
 from .utils import get_playlist_videos
 from .enhanced_session_manager import SessionManager, SessionData
-from .compact_progress_system import compact_analysis
+from .unified_display_system import analysis
 
 logger = logging.getLogger(__name__)
 
@@ -126,11 +126,13 @@ class FastQueueManager:
                 else:
                     artist = "Unknown Artist"
                     title = stem
-
+                from .unified_display_system import estimate_duration_from_file_size
+                estimated_duration = estimate_duration_from_file_size(str(file_path))
                 metadata = SongMetadata(
                     title=title,
                     artist=artist,
                     album=file_path.parent.name,
+                    duration=estimated_duration,
                     source=MetadataSource.CACHE
                 )
 
@@ -249,19 +251,19 @@ class FastQueueManager:
     def _analyze_item(self, item: QueueItem):
         """Analyze a single queue item"""
         try:
-            compact_analysis.start_analysis(item.path_or_url)
+            analysis.start_analysis(item.path_or_url)
             # Get metadata (this will include AcoustID if configured)
             metadata = self.metadata_fetcher.get_metadata(item.path_or_url)
             # Show analysis results
             if metadata.source == MetadataSource.ACOUSTID:
-                compact_analysis.acoustid_success(metadata.artist, metadata.title, metadata.confidence)
+                analysis.acoustid_success(metadata.artist, metadata.title, metadata.confidence)
                 item.acoustid_analyzed = True
                 self.stats['acoustid_analyzed'] += 1
             elif metadata.acoustid_attempted:
-                compact_analysis.acoustid_success(metadata.artist, metadata.title, metadata.confidence)
+                analysis.acoustid_success(metadata.artist, metadata.title, metadata.confidence)
                 item.acoustid_analyzed = True
             else:
-                compact_analysis.acoustid_success(metadata.artist, metadata.title, metadata.confidence)
+                analysis.acoustid_success(metadata.artist, metadata.title, metadata.confidence)
 
             # Update item
             with self.queue_lock:
