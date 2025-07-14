@@ -1,0 +1,17 @@
+{
+  "playlists": [
+    "https://www.youtube.com/watch?v=GwkUq3cXe8o&list=RDGwkUq3cXe8o",
+    "https://www.youtube.com/watch?v=X4jmOPivM7U&list=RDX4jmOPivM7U",
+    "https://www.youtube.com/watch?v=kgArcT4imrs&list=RDkgArcT4imrs",
+    "https://www.youtube.com/watch?v=6Ux6SlOE9Qk&list=RD6Ux6SlOE9Qk"
+  ],
+  "acoustid_api_key": "apI92Wf0YL",
+  "resume_session": true,
+  "auto_enhance_metadata": true,
+  "acoustid_confidence_threshold": 0.65,
+  "musicbrainz_confidence_threshold": 0.6,
+  "rename_after_download": true,
+  "acoustid_for_playback": true,
+  "download_sample_for_acoustid": true,
+  "max_sample_duration": 120
+}
